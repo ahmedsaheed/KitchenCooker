@@ -12,24 +12,47 @@ public class Player : MonoBehaviour {
     private bool isWalking;
     private Vector3 lastInteractionDirection;
 
-    private void Update() {
-        MovementHandler();
-        InteractionHandler();
+    private void Start() {
+        gameInput.OnInteractAction += GameInput_OnInteractAction;
     }
-    
-    private void InteractionHandler() {
+
+    private void GameInput_OnInteractAction(object sender, EventArgs e) {
         Vector2 inputVector = gameInput.GetMovementVectorNormalized();
         Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
-        
-        if  (moveDir != Vector3.zero) lastInteractionDirection = moveDir;
-        
+
+        if (moveDir != Vector3.zero) lastInteractionDirection = moveDir;
+
         float interactionDistance = 2f;
         // we are looking objects that has a physic collider in the direction of the last movement
-        if (Physics.Raycast(transform.position, lastInteractionDirection, out RaycastHit raycastHit, interactionDistance, counterLayerMask)) {
+        if (Physics.Raycast(transform.position, lastInteractionDirection, out RaycastHit raycastHit,
+                interactionDistance, counterLayerMask)) {
             // we found an object, is it a ClearCounter 
             if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter)) {
                 // its a ClearCounter, proceed to interact   
                 clearCounter.Interact();
+            }
+        }
+    }
+
+    private void Update() {
+        MovementHandler();
+        InteractionHandler();
+    }
+
+    private void InteractionHandler() {
+        Vector2 inputVector = gameInput.GetMovementVectorNormalized();
+        Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
+
+        if (moveDir != Vector3.zero) lastInteractionDirection = moveDir;
+
+        float interactionDistance = 2f;
+        // we are looking objects that has a physic collider in the direction of the last movement
+        if (Physics.Raycast(transform.position, lastInteractionDirection, out RaycastHit raycastHit,
+                interactionDistance, counterLayerMask)) {
+            // we found an object, is it a ClearCounter 
+            if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter)) {
+                // its a ClearCounter, proceed to interact   
+                // clearCounter.Interact();
             }
         }
     }
