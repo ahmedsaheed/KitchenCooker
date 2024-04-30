@@ -999,6 +999,18 @@ MonoBehaviour:
   m_AmplitudeGain: 1
   m_FrequencyGain: 1
   mNoiseOffsets: {x: 0, y: 0, z: 0}
+--- !u!114 &1882489913 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5853703753544513346, guid: 4153354997ba14cbfba88de6c73f219e,
+    type: 3}
+  m_PrefabInstance: {fileID: 1027458576}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96774afc0fef240d6827f2a24c9703da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2045331634 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3294758251327466535, guid: 1c5dda3c7cd3cf742afcade5419faeab,
@@ -1037,6 +1049,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: ClearCounter
       objectReference: {fileID: 0}
+    - target: {fileID: 5853703753544513346, guid: 4153354997ba14cbfba88de6c73f219e,
+        type: 3}
+      propertyPath: testing
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5853703753544513346, guid: 4153354997ba14cbfba88de6c73f219e,
+        type: 3}
+      propertyPath: secondClearCounter
+      value: 
+      objectReference: {fileID: 1882489913}
     - target: {fileID: 6430169784218781734, guid: 4153354997ba14cbfba88de6c73f219e,
         type: 3}
       propertyPath: m_LocalPosition.x
