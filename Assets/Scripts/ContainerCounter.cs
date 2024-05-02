@@ -2,15 +2,18 @@ using System;
 using UnityEngine;
 
 public class ContainerCounter : BaseCounter {
+    [SerializeField] private KitchenObjectScriptableObject kitchenObjectSO;
+
     // Start is called before the first frame update
     public event EventHandler OnPlayerGrabbedObject;
-    [SerializeField] private KitchenObjectScriptableObject kitchenObjectSO;
-    
+
 
     public override void Interact(Player player) {
-        // spawn object and give it to player
-        var kitchenObjectTransform = Instantiate(kitchenObjectSO.prefab);
-        kitchenObjectTransform.GetComponent<KitchenObject>().SetKitchenObjectParent(player);
-        OnPlayerGrabbedObject?.Invoke(this, EventArgs.Empty);
+        if (!player.HasKitchenObject()) {
+            // spawn object and give it to player, if the player doesn't have an object already
+            var kitchenObjectTransform = Instantiate(kitchenObjectSO.prefab);
+            kitchenObjectTransform.GetComponent<KitchenObject>().SetKitchenObjectParent(player);
+            OnPlayerGrabbedObject?.Invoke(this, EventArgs.Empty);
+        }
     }
 }
