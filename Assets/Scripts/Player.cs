@@ -97,7 +97,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent {
         if (!canMove) {
             // Try move on x & z axis
             var moveDirX = new Vector3(moveDir.x, 0, 0).normalized;
-            canMove = !Physics.CapsuleCast(
+            canMove = moveDir.x != 0 && !Physics.CapsuleCast(
                 transform.position,
                 transform.position + Vector3.up * playerHeight, playerRadius,
                 moveDirX, moveDistance);
@@ -107,7 +107,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent {
             }
             else {
                 var moveDirZ = new Vector3(0, 0, moveDir.z).normalized;
-                canMove = !Physics.CapsuleCast(
+                canMove = moveDir.z != 0 && !Physics.CapsuleCast(
                     transform.position,
                     transform.position + Vector3.up * playerHeight, playerRadius,
                     moveDirZ, moveDistance);
