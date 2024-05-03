@@ -1,11 +1,11 @@
 using System;
 using UnityEngine;
 
-public class CuttingCounter : BaseCounter {
+public class CuttingCounter : BaseCounter, IHasProgress {
     [SerializeField] private CuttingRecipeSO[] cuttingRecipeSoArray;
     private int cuttingProgress;
 
-    public event EventHandler<OnProgressChangedEventArgs> OnProgressChanged;
+    public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
     public event EventHandler onCut;
 
     public override void Interact(Player player) {
@@ -15,7 +15,7 @@ public class CuttingCounter : BaseCounter {
                     player.GetKitchenObject().SetKitchenObjectParent(this);
                     cuttingProgress = 0;
                     var cuttingRecipeSo = GetCuttingRecipeSoWithInput(GetKitchenObject().GetKitchenObjectSO());
-                    OnProgressChanged?.Invoke(this, new OnProgressChangedEventArgs {
+                    OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs {
                         progressNormalized = (float)cuttingProgress / cuttingRecipeSo.cuttingProgressMax
                     });
                 }
@@ -34,7 +34,7 @@ public class CuttingCounter : BaseCounter {
             cuttingProgress++;
             onCut?.Invoke(this, EventArgs.Empty);
             var cuttingRecipeSo = GetCuttingRecipeSoWithInput(GetKitchenObject().GetKitchenObjectSO());
-            OnProgressChanged?.Invoke(this, new OnProgressChangedEventArgs {
+            OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs {
                 progressNormalized = cuttingProgress / (float)cuttingRecipeSo.cuttingProgressMax
             });
             if (cuttingProgress >= cuttingRecipeSo.cuttingProgressMax) {
@@ -61,9 +61,5 @@ public class CuttingCounter : BaseCounter {
             if (cuttingRecipeSo.input == inputKitchenObjectScriptableObject)
                 return cuttingRecipeSo;
         return null;
-    }
-
-    public class OnProgressChangedEventArgs : EventArgs {
-        public float progressNormalized;
     }
 }
