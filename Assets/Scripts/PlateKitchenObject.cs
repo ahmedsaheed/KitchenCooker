@@ -24,6 +24,10 @@ public class PlateKitchenObject : KitchenObject {
         return true;
     }
 
+    public List<KitchenObjectScriptableObject> GetKitchenObjectSOList() {
+        return kitchenObjectSOList;
+    }
+
     public class OnIngredientAddedEventArgs : EventArgs {
         public KitchenObjectScriptableObject kitchenObjectSO;
     }
