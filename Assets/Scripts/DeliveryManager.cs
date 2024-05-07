@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -22,11 +23,14 @@ public class DeliveryManager : MonoBehaviour {
 
             if (waitingRecipeSoList.Count < waitingRecipeMax) {
                 var waitingRecipeSO = recipeListSO.recipeSOList[Random.Range(0, recipeListSO.recipeSOList.Count)];
-                Debug.Log("Waiting Recipe: " + waitingRecipeSO.recipeName);
                 waitingRecipeSoList.Add(waitingRecipeSO);
+                OnRecipeSpawned?.Invoke(this, EventArgs.Empty);
             }
         }
     }
+
+    public event EventHandler OnRecipeSpawned;
+    public event EventHandler OnRecipeCompleted;
 
     public void DeliverRecipe(PlateKitchenObject plateKitchenObject) {
         for (var i = 0; i < waitingRecipeSoList.Count; i++) {
@@ -45,13 +49,15 @@ public class DeliveryManager : MonoBehaviour {
                 }
 
                 if (plateContentMatchesRecipe) {
-                    Debug.Log("Delivered Correct Recipe");
                     waitingRecipeSoList.RemoveAt(i);
+                    OnRecipeCompleted?.Invoke(this, EventArgs.Empty);
                     return;
                 }
             }
         }
+    }
 
-        Debug.Log("Delivered Incorrect Recipe");
+    public List<RecipeSO> GetWaitingRecipeSoList() {
+        return waitingRecipeSoList;
     }
 }
