@@ -31,6 +31,8 @@ public class DeliveryManager : MonoBehaviour {
 
     public event EventHandler OnRecipeSpawned;
     public event EventHandler OnRecipeCompleted;
+    public event EventHandler OnRecipeSuccess;
+    public event EventHandler OnRecipeFailed;
 
     public void DeliverRecipe(PlateKitchenObject plateKitchenObject) {
         for (var i = 0; i < waitingRecipeSoList.Count; i++) {
@@ -51,10 +53,13 @@ public class DeliveryManager : MonoBehaviour {
                 if (plateContentMatchesRecipe) {
                     waitingRecipeSoList.RemoveAt(i);
                     OnRecipeCompleted?.Invoke(this, EventArgs.Empty);
+                    OnRecipeSuccess?.Invoke(this, EventArgs.Empty);
                     return;
                 }
             }
         }
+
+        OnRecipeFailed?.Invoke(this, EventArgs.Empty);
     }
 
     public List<RecipeSO> GetWaitingRecipeSoList() {

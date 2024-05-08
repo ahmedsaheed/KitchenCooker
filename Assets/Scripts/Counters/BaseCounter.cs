@@ -1,7 +1,9 @@
+using System;
 using UnityEngine;
 
 public class BaseCounter : MonoBehaviour, IKitchenObjectParent {
     // Start is called before the first frame update
+    public static event EventHandler OnAnyObjectPlacedHere;
     [SerializeField] private Transform counterTopPoint;
     private KitchenObject kitchenObject;
 
@@ -11,6 +13,9 @@ public class BaseCounter : MonoBehaviour, IKitchenObjectParent {
 
     public void SetKitchenObject(KitchenObject Ko) {
         kitchenObject = Ko;
+        if (Ko != null) {
+            OnAnyObjectPlacedHere?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     public KitchenObject GetKitchenObject() {

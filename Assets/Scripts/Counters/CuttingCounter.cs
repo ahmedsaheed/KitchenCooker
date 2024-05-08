@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Video;
 
 public class CuttingCounter : BaseCounter, IHasProgress {
     [SerializeField] private CuttingRecipeSO[] cuttingRecipeSoArray;
@@ -7,6 +8,7 @@ public class CuttingCounter : BaseCounter, IHasProgress {
 
     public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
     public event EventHandler onCut;
+    public static event EventHandler OnAnyCut;
 
     public override void Interact(Player player) {
         if (!HasKitchenObject()) {
@@ -37,6 +39,7 @@ public class CuttingCounter : BaseCounter, IHasProgress {
             // destroy object and spawn cut version of the object
             cuttingProgress++;
             onCut?.Invoke(this, EventArgs.Empty);
+            OnAnyCut?.Invoke(this, EventArgs.Empty);
             var cuttingRecipeSo = GetCuttingRecipeSoWithInput(GetKitchenObject().GetKitchenObjectSO());
             OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs {
                 progressNormalized = cuttingProgress / (float)cuttingRecipeSo.cuttingProgressMax
