@@ -13,7 +13,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent {
     private BaseCounter selectedCounter;
 
     public static Player Instance { get; private set; }
-    public event EventHandler OnPickedSomething;
+
     private void Awake() {
         if (Instance != null) Debug.LogError("Multiple Player instance in the scene");
 
@@ -37,9 +37,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent {
 
     public void SetKitchenObject(KitchenObject Ko) {
         kitchenObject = Ko;
-        if (Ko != null) {
-            OnPickedSomething?.Invoke(this, EventArgs.Empty);
-        }
+        if (Ko != null) OnPickedSomething?.Invoke(this, EventArgs.Empty);
     }
 
     public KitchenObject GetKitchenObject() {
@@ -54,16 +52,20 @@ public class Player : MonoBehaviour, IKitchenObjectParent {
         return kitchenObject != null;
     }
 
+    public event EventHandler OnPickedSomething;
+
     public event EventHandler<OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged;
 
     private void GameInput_OnInteractAction(object sender, EventArgs e) {
+        if (!KitchenGameManager.Instance.isGamePlaying()) return;
         if (selectedCounter != null) selectedCounter.Interact(this);
     }
-     private void GameInput_OnInteractAlternateAction(object sender, EventArgs e) {
-            if (selectedCounter != null) selectedCounter.InteractAlternate(this);
-        }
-        
-     
+
+    private void GameInput_OnInteractAlternateAction(object sender, EventArgs e) {
+        if (!KitchenGameManager.Instance.isGamePlaying()) return;
+        if (selectedCounter != null) selectedCounter.InteractAlternate(this);
+    }
+
 
     private void InteractionHandler() {
         var inputVector = gameInput.GetMovementVectorNormalized();
